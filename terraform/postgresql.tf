@@ -5,7 +5,7 @@ resource "azurerm_private_dns_zone" "postgresql_zone" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "postgresql_zone_link" {
-  name                  = postgresql-zone-link
+  name                  = "postgresql-zone-link"
   private_dns_zone_name = azurerm_private_dns_zone.postgresql_zone.name
   resource_group_name   = data.azurerm_resource_group.rg.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
@@ -28,9 +28,9 @@ resource "azurerm_postgresql_flexible_server" "postgresql" {
   zone                          = var.postgresql_zone
 
   timeouts {
-    create = 60m
-    update = 60m
-    delete = 60m
+    create = "60m"
+    update = "60m"
+    delete = "60m"
   }
 }
 
@@ -42,27 +42,27 @@ resource "azurerm_postgresql_flexible_server_database" "odoo_db" {
 }
 
 resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_azure_services" {
-  end_ip_address   = 0.0.0.0
-  name             = AllowAzureServices
+  end_ip_address   = "0.0.0.0"
+  name             = "AllowAzureServices"
   server_id        = azurerm_postgresql_flexible_server.postgresql.id
-  start_ip_address = 0.0.0.0
+  start_ip_address = "0.0.0.0"
 
   timeouts {
-    create = 60m
-    update = 60m
-    delete = 30m
+    create = "60m"
+    update = "60m"
+    delete = "30m"
   }
 }
 
 resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_all" {
-  end_ip_address   = 255.255.255.255
-  name             = AllowAKS
+  end_ip_address   = "255.255.255.255"
+  name             = "AllowAKS"
   server_id        = azurerm_postgresql_flexible_server.postgresql.id
-  start_ip_address = 0.0.0.0
+  start_ip_address = "0.0.0.0"
 
   timeouts {
-    create = 60m
-    update = 60m
-    delete = 30m
+    create = "60m"
+    update = "60m"
+    delete = "30m"
   }
 }

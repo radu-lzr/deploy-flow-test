@@ -15,14 +15,14 @@ resource "azurerm_subnet" "aks" {
 }
 
 resource "azurerm_subnet" "postgresql" {
-  name                 = postgresql-delegation
+  name                 = "postgresql-delegation"
   resource_group_name  = data.azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = [var.postgresql_subnet_cidr]
   service_endpoints    = var.subnet_service_endpoints
 
   delegation {
-    name = postgresql-delegation
+    name = "postgresql-delegation"
   }
 }
 
@@ -36,21 +36,21 @@ resource "azurerm_subnet" "storage" {
 
 resource "azurerm_network_security_group" "aks" {
   location            = data.azurerm_resource_group.rg.location
-  name                = nsg-${var.aks_subnet_name}
+  name                = "nsg-${var.aks_subnet_name}"
   resource_group_name = data.azurerm_resource_group.rg.name
   tags                = var.tags
 }
 
 resource "azurerm_network_security_group" "postgresql" {
   location            = data.azurerm_resource_group.rg.location
-  name                = nsg-${var.postgresql_subnet_name}
+  name                = "nsg-${var.postgresql_subnet_name}"
   resource_group_name = data.azurerm_resource_group.rg.name
   tags                = var.tags
 }
 
 resource "azurerm_network_security_group" "storage" {
   location            = data.azurerm_resource_group.rg.location
-  name                = nsg-${var.storage_subnet_name}
+  name                = "nsg-${var.storage_subnet_name}"
   resource_group_name = data.azurerm_resource_group.rg.name
   tags                = var.tags
 }
@@ -71,7 +71,7 @@ resource "azurerm_subnet_network_security_group_association" "storage" {
 }
 
 resource "azurerm_private_dns_zone" "postgresql" {
-  name                = ${var.postgresql_server_name}.private.postgres.database.azure.com
+  name                = "${var.postgresql_server_name}.private.postgres.database.azure.com"
   resource_group_name = data.azurerm_resource_group.rg.name
   tags                = var.tags
 
@@ -80,8 +80,8 @@ resource "azurerm_private_dns_zone" "postgresql" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "postgresql" {
-  name                  = postgresql-vnet-link
-  private_dns_zone_name = azurerm_private_dns_zone.postgresql[0].name
+  name                  = "postgresql-vnet-link"
+  private_dns_zone_name = "azurerm_private_dns_zone.postgresql[0].name"
   resource_group_name   = data.azurerm_resource_group.rg.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
   tags                  = var.tags

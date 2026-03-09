@@ -11,20 +11,20 @@ resource "azurerm_storage_account" "storage" {
   blob_properties {
   }
   network_rules {
-    default_action = Allow
+    default_action = "Allow"
   }
 }
 
 resource "azurerm_storage_container" "odoo_filestore" {
   name                  = var.storage_container_name
-  container_access_type = private
+  container_access_type = "private"
   storage_account_id    = azurerm_storage_account.storage.id
 }
 
 resource "azurerm_role_assignment" "odoo_storage_sp" {
   principal_id         = var.odoo_storage_sp_object_id
   scope                = azurerm_storage_account.storage.id
-  role_definition_name = Storage Blob Data Contributor
+  role_definition_name = "Storage Blob Data Contributor"
 }
 
 resource "azurerm_storage_management_policy" "lifecycle" {
@@ -32,24 +32,24 @@ resource "azurerm_storage_management_policy" "lifecycle" {
 
   rule {
     enabled = true
-    name    = deleteOldVersions
+    name    = "deleteOldVersions"
   }
 }
 
 resource "azurerm_private_endpoint" "storage" {
   location            = data.azurerm_resource_group.rg.location
-  name                = pdz-group-storage
+  name                = "pdz-group-storage"
   resource_group_name = data.azurerm_resource_group.rg.name
   subnet_id           = azurerm_subnet.storage.id
   tags                = var.tags
 
   private_dns_zone_group {
-    name                 = pdz-group-storage
+    name                 = "pdz-group-storage"
     private_dns_zone_ids = [azurerm_private_dns_zone.storage[0].id]
   }
   private_service_connection { # Required
     is_manual_connection           = false
-    name                           = pdz-group-storage
+    name                           = "pdz-group-storage"
     private_connection_resource_id = azurerm_storage_account.storage.id
     subresource_names              = ["blob"]
   }
@@ -68,8 +68,8 @@ resource "azurerm_private_dns_zone" "storage" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "storage" {
-  name                  = storage-vnet-link
-  private_dns_zone_name = azurerm_private_dns_zone.storage[0].name
+  name                  = "storage-vnet-link"
+  private_dns_zone_name = "azurerm_private_dns_zone.storage[0].name"
   resource_group_name   = data.azurerm_resource_group.rg.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
   tags                  = var.tags

@@ -1,22 +1,22 @@
 resource "azurerm_kubernetes_cluster" "aks" {
   location            = data.azurerm_resource_group.rg.location
-  name                = default
+  name                = "default"
   resource_group_name = data.azurerm_resource_group.rg.name
   dns_prefix          = var.aks_dns_prefix
   kubernetes_version  = var.aks_kubernetes_version
   tags                = var.tags
 
   default_node_pool { # Required
-    name                        = default
+    name                        = "default"
     vnet_subnet_id              = azurerm_subnet.aks.id
     auto_scaling_enabled        = true
     min_count                   = var.aks_node_pool_min_count
     max_count                   = var.aks_node_pool_max_count
-    temporary_name_for_rotation = temppool
+    temporary_name_for_rotation = "temppool"
     tags                        = var.tags
   }
   identity {
-    type = SystemAssigned
+    type = "SystemAssigned"
   }
   network_profile {
     network_plugin    = var.aks_network_plugin

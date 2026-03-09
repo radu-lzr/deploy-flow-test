@@ -33,6 +33,11 @@ resource "azurerm_storage_management_policy" "lifecycle" {
   rule {
     enabled = true
     name    = "deleteOldVersions"
+    actions { # Required
+    }
+    filters { # Required
+      blob_types = []
+    }
   }
 }
 

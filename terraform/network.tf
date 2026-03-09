@@ -23,6 +23,9 @@ resource "azurerm_subnet" "postgresql" {
 
   delegation {
     name = "postgresql-delegation"
+    service_delegation { # Required
+      name = "postgresql-delegation"
+    }
   }
 }
 

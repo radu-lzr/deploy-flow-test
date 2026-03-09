@@ -1,0 +1,20 @@
+# .terrateam/config.yml
+# Define dynamic tags based on the destination branch
+tags:
+  dest_branch:
+    main: "^main$"
+    develop: "^develop$"
+    poc: "^poc$"
+
+dirs:
+  "terraform":
+    tags: ["deployflow"]
+
+destination_branches:
+  - "main"
+  - "poc"
+  - "develop"
+  
+engine:
+  name: "terraform"
+  version: "1.14.5"

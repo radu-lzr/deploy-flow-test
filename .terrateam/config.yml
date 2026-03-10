@@ -2,6 +2,8 @@
 tags:
   dest_branch:
     dev: "^dev$"
+    poc: "^poc$"
+    prod: "^main$"
 
 dirs:
   "terraform":
@@ -9,6 +11,8 @@ dirs:
 
 destination_branches:
   - "dev"
+  - "poc"
+  - "main"
 
 engine:
   name: "terraform"

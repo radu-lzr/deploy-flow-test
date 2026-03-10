@@ -4,9 +4,6 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = data.azurerm_resource_group.rg.name
   address_space       = var.vnet_address_space
   tags                = var.tags
-
-  # Computed attributes (read-only):
-  # guid = (computed)
 }
 
 resource "azurerm_subnet" "aks" {
@@ -84,19 +81,13 @@ resource "azurerm_private_dns_zone" "postgresql" {
   resource_group_name = data.azurerm_resource_group.rg.name
   tags                = var.tags
 
-  # Computed attributes (read-only):
-  # max_number_of_record_sets                             = (computed)
-  # max_number_of_virtual_network_links                   = (computed)
-  # max_number_of_virtual_network_links_with_registration = (computed)
-  # number_of_record_sets                                 = (computed)
-
   count = var.enable_private_endpoints ? 1 : 0
 
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "postgresql" {
   name                  = "postgresql-vnet-link"
-  private_dns_zone_name = "azurerm_private_dns_zone.postgresql[0].name"
+  private_dns_zone_name = azurerm_private_dns_zone.postgresql[0].name
   resource_group_name   = data.azurerm_resource_group.rg.name
   virtual_network_id    = azurerm_virtual_network.vnet.id
   tags                  = var.tags
